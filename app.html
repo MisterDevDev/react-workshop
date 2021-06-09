@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    </head>
+    <body>
+        <h1>State and Props</h1>
+        <div id='root'>App</div>
+        <script type='text/babel'>
+
+            class App extends React.Component{
+                constructor(){
+                    super();
+                    this.state = {
+                        products: []
+                    }
+                    window.setInterval(()=> {
+                        this.setState({ products: [faker.commerce.product()] })
+                    }, 500)
+                }
+                render(){
+                    console.log(this)
+                    return (
+                        <div>
+                            <ul>
+                                {
+                                    this.state.products.map( (p, idx) => {
+                                        return (
+                                            <li key={ idx }>
+                                                {p}
+                                            </li>
+                                        )
+                                    } )
+                                }
+                            </ul> 
+                        </div>
+                    )
+                }
+            }
+            const root = document.querySelector('#root');
+            ReactDOM.render(React.createElement(App), root)
+
+        </script>
+    </body>
+</html>

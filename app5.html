@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    </head>
+    <body>
+        <h1>Colors!!</h1>
+        <div id='root'>APP</div>
+        <script type='text/babel'>
+            class App extends React.Component {
+                constructor() {
+                    super()
+                    this.state = {
+                        colors: []
+                    }
+                }
+
+                boxStyle (c) {
+                    return ({
+                        backgroundColor: `${c}`,
+                        height: '200px',
+                        width: '200px',
+                        padding: '25px',
+                        margin: '25px'
+                    })
+                }
+                selectedStyle (c) {
+                    return ({
+                        background: `repeating-linear-gradient(-45deg, ${c}, ${c} 5px, white 5px, white 10px)`,
+                        height: '200px',
+                        width: '200px',
+                        padding: '25px',
+                        margin: '25px',
+                        borderStyle: 'solid',
+                        borderWidth: '10px'
+                    })
+                }
+                selectHandler (idx) {
+                    return(
+                    this.setState({ colors: this.state.colors.map((color, _idx) => {
+                        if(_idx === idx) {
+                            color.isSelected = !color.isSelected
+                        }
+                        return color;
+                    }) }))
+                }
+
+                addColor = () => {
+                    const color = faker.commerce.color()
+                    this.setState({ colors: [...this.state.colors, {name: color, isSelected: false}] })
+                }
+
+                render(){
+                    console.log(this)
+                    return (
+                        <div>
+                            <button onClick={ this.addColor }> Generate Color </button>
+                            <div style={{display: 'flex',
+                                         justifyContent: 'space-around',
+                                         flexWrap: 'wrap'
+                                        }}>
+                                { this.state.colors.map(( c, idx ) => {
+                                    return (
+                                    <div style={c.isSelected ? this.selectedStyle(c.name) : this.boxStyle(c.name)}
+                                          onClick={ ()=> this.selectHandler(idx) }>
+                                        {c.name}
+                                    </div>
+                                 )}) }
+                            </div>
+                        </div>
+                    )
+                }
+            }
+            const root = document.querySelector('#root');
+            ReactDOM.render(React.createElement(App), root)
+        </script>
+    </body>
+</html>
+

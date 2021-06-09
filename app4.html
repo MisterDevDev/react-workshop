@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    </head>
+    <body>
+        <h1>State and Props</h1>
+        <div id='root'>App</div>
+        <script type='text/babel'>
+
+            function Stats(prop) {
+                const wordCount = Object.values(prop)[0].length;
+                return <div>Paragraph Length: {wordCount}</div>
+            }
+
+            class App extends React.Component{
+                constructor(){
+                    super();
+                    this.state = {
+                        paragraphs: []
+                    }
+                }
+
+                addParagraph = () => {
+                    console.log(faker.lorem.paragraph())
+                    this.setState({ paragraphs: [...this.state.paragraphs, faker.lorem.paragraph()] })
+                }
+
+                deleteParagraph (idx) {
+                    const paragraphs = this.state.paragraphs.filter((p, _idx) => _idx !== idx)
+                    this.setState({ paragraphs })
+                }
+
+
+                render(){
+                    console.log(this)
+                    return (
+                        <div>
+                            <button onClick={ this.addParagraph }>Generate Paragraph</button>
+                            <ul>
+                                {
+                                    this.state.paragraphs.map( (p, idx) => {
+                                        return (
+                                            <li key={ idx }>
+                                                {p}
+                                                <button onClick={ ()=> this.deleteParagraph(idx) }>X</button>
+                                                <Stats prop={p} />
+                                            </li>
+                                        )
+                                    } )
+                                }
+                            </ul> 
+                        </div>
+                    )
+                }
+            }
+            const root = document.querySelector('#root');
+            ReactDOM.render(React.createElement(App), root)
+
+        </script>
+    </body>
+</html>
