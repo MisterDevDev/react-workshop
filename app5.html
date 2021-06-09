@@ -42,7 +42,7 @@
                     this.setState({ colors: this.state.colors.map((color, _idx) => {
                         if(_idx === idx) {
                             color.isSelected = !color.isSelected
-                        }
+                        } else color.isSelected = false
                         return color;
                     }) }))
                 }
